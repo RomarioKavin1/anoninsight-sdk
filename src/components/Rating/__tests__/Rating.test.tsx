@@ -11,5 +11,6 @@ const setup = (props = defaultProps) => render(<Rating {...props} />);
 describe('Rating', () => {
   it('renders', () => {
     setup();
-      expect(screen.getByText('Rate Us'));});
+    expect(screen.getByText('Rate Us'));
+  });
 });
