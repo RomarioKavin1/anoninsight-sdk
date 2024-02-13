@@ -9,8 +9,7 @@ const defaultProps: RatingProps = {
 const setup = (props = defaultProps) => render(<Rating {...props} />);
 
 describe('Rating', () => {
-  // it('renders', () => {
-  //   setup({children: 'foo'});
-  //   expect(screen.getByText('foo'));
-  // });
+  it('renders', () => {
+    setup();
+      expect(screen.getByText('Rate Us'));});
 });
