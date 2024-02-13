@@ -3,7 +3,7 @@ import './rating.scss';
 export interface RatingProps {
   groupid: string;
 }
-export const Rating: React.FC<RatingProps> = (groupid) => {
+export const Rating: React.FC<RatingProps> = ({groupid}) => {
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>('');
 
@@ -24,7 +24,7 @@ export const Rating: React.FC<RatingProps> = (groupid) => {
 
   return (
     <div className='rating-form'>
-      <h2>Rate Us</h2>
+      <h2>Rate Us {groupid}</h2>
       <form onSubmit={handleSubmit}>
         <div className='rating-input'>
           {[1, 2, 3, 4, 5].map((value) => (
@@ -47,7 +47,7 @@ export const Rating: React.FC<RatingProps> = (groupid) => {
           onChange={handleCommentChange}
         />
         <button type='submit' className='submit-button'>
-          Submit
+          Submit 
         </button>
       </form>
     </div>
