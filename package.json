@@ -14,7 +14,7 @@
     "url": "git+https://github.com/sixfootsixdesigns/React-Library-Boilerplate.git"
   },
   "scripts": {
-    "build": "yarn clean; rollup -c",
+    "build": "yarn clean ; rollup -c",
     "clean": "rimraf dist",
     "dev": "yarn storybook",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,js,jsx}\"",
@@ -34,7 +34,8 @@
   "module": "index.esm.js",
   "types": "index.d.ts",
   "dependencies": {
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "node-gyp": "^10.0.1"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -73,7 +74,7 @@
     "hygen": "^6.0.4",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
-    "node-sass": "^5.0.0",
+    "node-sass": "^9.0.0",
     "prettier": "^2.2.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
