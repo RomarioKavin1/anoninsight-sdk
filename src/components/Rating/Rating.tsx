@@ -24,7 +24,7 @@ export const Rating: React.FC<RatingProps> = ({groupid}) => {
 
   return (
     <div className='rating-form'>
-      <h2>Rate Us {groupid}</h2>
+      <h2>Rate Us</h2>
       <form onSubmit={handleSubmit}>
         <div className='rating-input'>
           {[1, 2, 3, 4, 5].map((value) => (
