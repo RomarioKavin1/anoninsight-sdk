@@ -34,8 +34,7 @@
   "module": "index.esm.js",
   "types": "index.d.ts",
   "dependencies": {
-    "classnames": "^2.2.6",
-    "node-gyp": "^10.0.1"
+    "classnames": "^2.2.6"
   },
   "peerDependencies": {
     "react": "^16.8.0",
