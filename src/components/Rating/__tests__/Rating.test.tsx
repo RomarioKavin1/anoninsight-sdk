@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 
 const defaultProps: RatingProps = {
   groupid: 'nfajf',
+  apikey: 'fjafj'
 };
 
 const setup = (props = defaultProps) => render(<Rating {...props} />);

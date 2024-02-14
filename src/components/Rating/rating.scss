@@ -38,7 +38,7 @@
   }
 
   .comment-input {
-    width: 90%;
+    width: 95%;
     height: 100px;
     margin-bottom: 20px;
     padding: 10px;
@@ -47,12 +47,41 @@
     resize: none;
     font-family: Arial, sans-serif;
   }
-
+  .email-input {
+    width: 95%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .success-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #08cd36; /* Success color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  
+    &:hover {
+      background-color: #218838; /* Darker shade of success color on hover */
+    }
+  
+    &:disabled {
+      background-color: #08cd36; /* Lighter shade for disabled state */
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
   .submit-button {
     display: block;
     width: 100%;
     padding: 10px;
     background-color: #007bff;
+    margin-bottom: 10px;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -61,6 +90,11 @@
 
     &:hover {
       background-color: #0056b3;
+    }
+    &:disabled {
+      background-color: #ccc; /* Change color for disabled state */
+      cursor: not-allowed; /* Change cursor for disabled state */
+      opacity: 0.5; /* Reduce opacity for disabled state */
     }
   }
 }

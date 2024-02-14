@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import './rating.scss';
 export interface RatingProps {
   groupid: string;
+  apikey:string;
 }
-export const Rating: React.FC<RatingProps> = ({groupid}) => {
+export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>('');
-
+  const [email, setEmail] = useState<string>('');
+  const [identity, setIdentity] = useState<boolean>(true);
+  const [group, setGroup] = useState<boolean>(false);
   const handleRatingChange = (value: number) => {
     setRating(value);
   };
@@ -24,8 +27,16 @@ export const Rating: React.FC<RatingProps> = ({groupid}) => {
 
   return (
     <div className='rating-form'>
-      <h2>Rate Us</h2>
+      
       <form onSubmit={handleSubmit}>
+        <input type='text' className="email-input" disabled={identity} placeholder='Enter Email'/>  
+        <button className={`${!identity?"submit-button":"success-button"}`} disabled={identity}>
+          {!identity?`Create Identity`: `Identity Created`}
+        </button>
+        <button className={`${!group?"submit-button":"success-button"}`} disabled={identity&&group}>
+          {!group?`Join Group`: `Group Joined`}
+        </button>
+        <h2>Rate Us</h2>
         <div className='rating-input'>
           {[1, 2, 3, 4, 5].map((value) => (
             <label key={value}>
@@ -46,7 +57,7 @@ export const Rating: React.FC<RatingProps> = ({groupid}) => {
           value={comment}
           onChange={handleCommentChange}
         />
-        <button type='submit' className='submit-button'>
+        <button type='submit' className='submit-button' disabled={!(identity&&group)}>
           Submit 
         </button>
       </form>
