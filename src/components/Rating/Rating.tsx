@@ -23,6 +23,11 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
     // Handle form submission logic here
     console.log('Rating:', rating);
     console.log('Comment:', comment);
+    setEmail('');
+    setIdentity(false);
+    setGroup(false);
+    console.log('Email:', email);
+
   };
 
   return (
