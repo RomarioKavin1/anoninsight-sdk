@@ -5,7 +5,7 @@ export interface RatingProps {
   apikey:string;
 }
 import { Identity } from "@semaphore-protocol/identity"
-import { CredentialResponse, GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google';
 // import sindri from "sindri";
 import { jwtDecode } from 'jwt-decode';
 export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
