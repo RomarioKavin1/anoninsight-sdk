@@ -127,7 +127,7 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
         </button>
         {_identity&&<p>{_identity?.commitment.toString()}</p>}
         {groupdebug=="Unexpected end of JSON input"&&<p>Group Joined</p>}
-        {name&&<p>Name: {name}</p>}
+        {name&&<p>Name:{name}</p>}
         {email&&<p>Your Email Id {email}</p>}
         <h2>Rate Us</h2>
         <div className='rating-input'>
