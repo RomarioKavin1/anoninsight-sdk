@@ -133,11 +133,11 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey,GOOGLE_CLIENT_ID,s
 
         
         {groupdebug=="Unexpected end of JSON input"&&<p>Group Joined</p>}
-        <div style={{textAlign:'center'}}>
-          {name&&<p style={{fontWeight:'bold'}}>{name}</p>}
-          {email&&<p style={{fontWeight:'bold'}}>{email}</p>}
-          {emaildebug&&(emailverify?<p style={{fontWeight:'bold', color:'green'}}>Email Verified</p>:<p style={{fontWeight:'bold', color:'red'}}>Email Not Eligible</p>)}
-          {loadingverify&&<><p style={{fontWeight:'bold'}}>Verifying</p><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></>}
+        <div className='divcenter'>
+          {name&&<p >{name}</p>}
+          {email&&<p >{email}</p>}
+          {emaildebug&&(emailverify?<p className='greentxt' >Email Verified</p>:<p className='redtxt'>Email Not Eligible</p>)}
+          {loadingverify&&<><p>Verifying</p><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></>}
         </div>
         <h2>Rate Us</h2>
         <button className={`${!identity?"submit-button":"success-button"}`} 
