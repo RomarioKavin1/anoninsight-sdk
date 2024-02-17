@@ -28,11 +28,8 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey,GOOGLE_CLIENT_ID,s
   };
   const createIdentity = async () => {
     const identity = new Identity(email);
-
     setIdentity(identity);
-
-    console.log(identity);
-    console.log("Your new Semaphore identity was just created 🎉");
+    console.log("Your new Semaphore identity was just created with the following commitment: ", _identity!.commitment.toString());
     const groupId = groupid;
     const memberId = identity.commitment.toString();
     const url = `https://api.bandada.pse.dev/groups/${groupId}/members/${memberId}`;
