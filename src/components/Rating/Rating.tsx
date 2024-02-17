@@ -3,12 +3,15 @@ import './rating.scss';
 export interface RatingProps {
   groupid: string;
   apikey:string;
+  GOOGLE_CLIENT_ID: string;
+  sindri_circuit_id: string;
+  sindri_api_key: string;
 }
 import { Identity } from "@semaphore-protocol/identity"
 import { GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google';
 import sindri from "sindri";
 import { jwtDecode } from 'jwt-decode';
-export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
+export const Rating: React.FC<RatingProps> = ({groupid,apikey,GOOGLE_CLIENT_ID,sindri_api_key,sindri_circuit_id}) => {
   const [_identity, setIdentity] = useState<Identity>();
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>('');
@@ -19,6 +22,7 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
   const [name, setName] = useState<string>();
   const [emailverify, setEmailverify] = useState<boolean>(false);
   const [emaildebug, setEmaildebug] = useState<string>();
+  const [loadingverify, setLoadingverify] = useState<boolean>(false);
   const handleRatingChange = (value: number) => {
     setRating(value);
   };
@@ -63,20 +67,23 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
   };
   const proveemail = async (mail:string) => {
     sindri.authorize({
-      apiKey: "sindri-IjDGLtsLoyz7YImxxcQSUtJp6ZgS5nSB-lEbB",
+      apiKey: sindri_api_key,
     });
     console.log("started");
     try {
       const msg_value = byt(mail);
+      setLoadingverify(true);
       const proof = await sindri.proveCircuit(
-        "d4205533-cd52-4cff-a4a5-1511dd01bcb1",
+        sindri_circuit_id,
         `{"msg": ${msg_value}}`
       );
       if (proof.proof) {
+        setLoadingverify(false);
         setEmailverify(true);
         setEmaildebug("Email Verified");
         console.log(identity);
       } else {
+        setLoadingverify(false);
         setEmailverify(false);
         setEmaildebug(proof.error);
       }
@@ -117,38 +124,43 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
     };
 
   return (
-    <GoogleOAuthProvider clientId="128965649558-rua6r0kk2bq6eq3rcgo5eprnf6ho7p5s.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <div className='rating-form'>
       <form onSubmit={handleSubmit}>
         <div className='center'>
           <GoogleLogin onSuccess={credentialResponse => {googleSuccess(credentialResponse);}}></GoogleLogin>
         </div>  
 
+        
+        {groupdebug=="Unexpected end of JSON input"&&<p>Group Joined</p>}
+        <div style={{textAlign:'center'}}>
+          {name&&<p style={{fontWeight:'bold'}}>{name}</p>}
+          {email&&<p style={{fontWeight:'bold'}}>{email}</p>}
+          {emaildebug&&(emailverify?<p style={{fontWeight:'bold', color:'green'}}>Email Verified</p>:<p style={{fontWeight:'bold', color:'red'}}>Email Not Eligible</p>)}
+          {loadingverify&&<><p style={{fontWeight:'bold'}}>Verifying</p><div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div></>}
+        </div>
+        <h2>Rate Us</h2>
         <button className={`${!identity?"submit-button":"success-button"}`} 
         disabled={!emailverify} 
         onClick={createIdentity}>
           {!identity?`Create Identity`: `Identity Created`}
         </button>
-        {_identity&&<p>{_identity?.commitment.toString()}</p>}
-        {groupdebug=="Unexpected end of JSON input"&&<p>Group Joined</p>}
-        {name&&<p>Name:{name}</p>}
-        {email&&<p>Your Email Id {email}</p>}
-        {emaildebug&&<p>{emaildebug}</p>}
-        <h2>Rate Us</h2>
         <div className='rating-input'>
-          {[1, 2, 3, 4, 5].map((value) => (
-            <label key={value}>
-              <input
-                type='radio'
-                name='rating'
-                value={value}
-                checked={rating === value}
-                onChange={() => handleRatingChange(value)}
-              />
-              <span className='star'>&#9733;</span>
-            </label>
-          ))}
-        </div>
+  {[1, 2, 3, 4, 5].map((value) => (
+    <label key={value}>
+      <input
+        type='radio'
+        name='rating'
+        value={value}
+        checked={rating === value}
+        onChange={() => handleRatingChange(value)}
+      />
+      <span className='star'>{rating !== null && value <= rating ? '\u2605' : '\u2606'}</span>
+    </label>
+  ))}
+</div>
+
+
         <textarea
           className='comment-input'
           placeholder='Leave an anonymous feedback'
