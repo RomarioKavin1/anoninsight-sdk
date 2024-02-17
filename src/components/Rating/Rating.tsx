@@ -6,7 +6,7 @@ export interface RatingProps {
 }
 import { Identity } from "@semaphore-protocol/identity"
 import { GoogleLogin,GoogleOAuthProvider } from '@react-oauth/google';
-// import sindri from "sindri";
+import sindri from "sindri";
 import { jwtDecode } from 'jwt-decode';
 export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
   const [_identity, setIdentity] = useState<Identity>();
@@ -16,8 +16,9 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
   const [identity, setIdentitydone] = useState<boolean>(false);
   const [group, setGroup] = useState<boolean>(false);
   const [groupdebug, setGroupdebug] = useState<string>();
-  // const [emailverify, setEmailverify] = useState<boolean>(false);
   const [name, setName] = useState<string>();
+  const [emailverify, setEmailverify] = useState<boolean>(false);
+  const [emaildebug, setEmaildebug] = useState<string>();
   const handleRatingChange = (value: number) => {
     setRating(value);
   };
@@ -60,39 +61,40 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
       });
     
   };
-  // const proveemail = async () => {
-  //   sindri.authorize({
-  //     apiKey: "sindri-IjDGLtsLoyz7YImxxcQSUtJp6ZgS5nSB-lEbB",
-  //   });
-  //   console.log("started");
-  //   try {
-  //     const msg_value = byt(email);
+  const proveemail = async (mail:string) => {
+    sindri.authorize({
+      apiKey: "sindri-IjDGLtsLoyz7YImxxcQSUtJp6ZgS5nSB-lEbB",
+    });
+    console.log("started");
+    try {
+      const msg_value = byt(mail);
+      const proof = await sindri.proveCircuit(
+        "d4205533-cd52-4cff-a4a5-1511dd01bcb1",
+        `{"msg": ${msg_value}}`
+      );
+      if (proof.proof) {
+        setEmailverify(true);
+        setEmaildebug("Email Verified");
+        console.log(identity);
+      } else {
+        setEmailverify(false);
+        setEmaildebug(proof.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  //     const proof = await sindri.proveCircuit(
-  //       "d4205533-cd52-4cff-a4a5-1511dd01bcb1",
-  //       `{"msg": ${msg_value}}`
-  //     );
-  //     if (proof.proof) {
-  //       setEmailverify(true);
-  //       console.log(identity);
-  //     } else {
-  //       setEmailverify(false);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const byt =(email: string) => {
+    const maxLength = 100;
 
-  // const byt =(email: string) => {
-  //   const maxLength = 100;
+    const encoder = new TextEncoder();
+    const buffer = encoder.encode(email.padEnd(maxLength, "\0"));
 
-  //   const encoder = new TextEncoder();
-  //   const buffer = encoder.encode(email.padEnd(maxLength, "\0"));
-
-  //   const charArray = Array.from(buffer).map((s) => s.toString());
-  //   console.log(JSON.stringify(charArray));
-  //   return JSON.stringify(charArray);
-  // }
+    const charArray = Array.from(buffer).map((s) => s.toString());
+    console.log(JSON.stringify(charArray));
+    return JSON.stringify(charArray);
+  }
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(event.target.value);
@@ -111,6 +113,7 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
       const name = decoded?.name;
       setEmail(email);
       setName(name);
+      proveemail(email);
     };
 
   return (
@@ -120,8 +123,9 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
         <div className='center'>
           <GoogleLogin onSuccess={credentialResponse => {googleSuccess(credentialResponse);}}></GoogleLogin>
         </div>  
+
         <button className={`${!identity?"submit-button":"success-button"}`} 
-        // disabled={emailverify} 
+        disabled={!emailverify} 
         onClick={createIdentity}>
           {!identity?`Create Identity`: `Identity Created`}
         </button>
@@ -129,6 +133,7 @@ export const Rating: React.FC<RatingProps> = ({groupid,apikey}) => {
         {groupdebug=="Unexpected end of JSON input"&&<p>Group Joined</p>}
         {name&&<p>Name:{name}</p>}
         {email&&<p>Your Email Id {email}</p>}
+        {emaildebug&&<p>{emaildebug}</p>}
         <h2>Rate Us</h2>
         <div className='rating-input'>
           {[1, 2, 3, 4, 5].map((value) => (
